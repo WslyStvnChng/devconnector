@@ -8,6 +8,10 @@ const jwt = require('jsonwebtoken');
 const keys = require('../../config/keys');
 const passport = require('passport');
 
+// Load input validation
+const validateRegisterInput = require('../../validation/register');
+const validateLoginInput = require('../../validation/login');
+
 
 // Load User Model
 const User = require("../../models/User");
@@ -23,15 +27,28 @@ router.get('/test', (req, res) => res.json({
 // @description   Register user
 // @access        Public
 router.post('/register', (req, res) => {
+
+  // Pull out the errors from validateRegisterInput - req.body is everything said to route name, password etc
+  const {
+    errors,
+    isValid
+  } = validateRegisterInput(req.body);
+
+  // Check validation (1st line of validation)
+  if (!isValid) {
+
+    // Checks to see if user's input is valid under the circumstances of 'is-empty.js'
+    return res.status(400).json(errors);
+  }
+
   User.findOne({
       email: req.body.email
     })
     .then(user => {
       // If there is an user with that email address
       if (user) {
-        return res.status(400).json({
-          email: 'Email already exists'
-        });
+        errors.email = 'Email already exist';
+        return res.status(400).json(errors);
         // Else use gravatar from schema email
       } else {
         const avatar = gravatar.url(req.body.email, {
@@ -67,6 +84,18 @@ router.post('/register', (req, res) => {
 // @access        Public
 
 router.post('/login', (req, res) => {
+
+  // Pull out the errors from validateRegisterInput - req.body is everything said to route name, password etc
+  const {
+    errors,
+    isValid
+  } = validateLoginInput(req.body);
+
+  // Check validation (1st line of validation)
+  if (!isValid) {
+    // Checks to see if user's input is valid under the circumstances of 'is-empty.js'
+    return res.status(400).json(errors);
+  }
   const email = req.body.email;
   const password = req.body.password;
 
@@ -77,9 +106,8 @@ router.post('/login', (req, res) => {
     .then(user => {
       // Check for user
       if (!user) {
-        return res.status(404).json({
-          email: 'User not found'
-        });
+        errors.email = 'User not found'
+        return res.status(404).json(errors);
       }
 
       // Check password
@@ -108,9 +136,8 @@ router.post('/login', (req, res) => {
 
             });
         } else {
-          return res.status(400).json({
-            password: 'Password Incorrect'
-          })
+          errors.password = 'Password incorrect'
+          return res.status(400).json(errors);
         }
       });
     });
