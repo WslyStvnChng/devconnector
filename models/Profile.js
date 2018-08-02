@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-// Create Schema for Profile
+// Create Schema
 const ProfileSchema = new Schema({
   user: {
     type: Schema.Types.ObjectId,
@@ -13,10 +13,10 @@ const ProfileSchema = new Schema({
     max: 40
   },
   company: {
-    type: String,
+    type: String
   },
   website: {
-    type: String,
+    type: String
   },
   location: {
     type: String
@@ -26,12 +26,11 @@ const ProfileSchema = new Schema({
     required: true
   },
   skills: {
-    // Array of String (user's skills: js, react, etc)
     type: [String],
-    required: true,
+    required: true
   },
   bio: {
-    type: String,
+    type: String
   },
   githubusername: {
     type: String
@@ -48,7 +47,6 @@ const ProfileSchema = new Schema({
     location: {
       type: String
     },
-    //When user started working
     from: {
       type: Date,
       required: true
@@ -102,19 +100,17 @@ const ProfileSchema = new Schema({
     facebook: {
       type: String
     },
-    instagram: {
+    linkedin: {
       type: String
     },
-    linkedin: {
+    instagram: {
       type: String
     }
   },
   date: {
     type: Date,
-    //Current Time Stamp
     default: Date.now
   }
-
 });
 
 module.exports = Profile = mongoose.model('profile', ProfileSchema);
