@@ -36,7 +36,6 @@ app.use('/api/users', users);
 app.use('/api/profile', profile);
 app.use('/api/posts', posts);
 
-
 // PORT
 const port = process.env.PORT || 5000;
 

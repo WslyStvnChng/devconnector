@@ -1,5 +1,4 @@
 // Function to check for undefined, mull, object and string
-
 const isEmpty = (value) =>
 
   //If value === undefined

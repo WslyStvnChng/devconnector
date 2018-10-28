@@ -1,5 +1,4 @@
 // Hold Authenication of Users
-
 const express = require('express');
 const router = express.Router();
 const gravatar = require('gravatar');
@@ -11,7 +10,6 @@ const passport = require('passport');
 // Load input validation
 const validateRegisterInput = require('../../validation/register');
 const validateLoginInput = require('../../validation/login');
-
 
 // Load User Model
 const User = require("../../models/User");
@@ -152,7 +150,6 @@ router.get('/current', passport.authenticate('jwt', {
 }), (req, res) => {
   //req.user is from jwt_payload and it returns the value of the current user login
   res.json({
-
     // Return only the Id, Name and Email
     id: req.user.id,
     name: req.user.name,
